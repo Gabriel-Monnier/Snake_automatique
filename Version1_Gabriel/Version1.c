@@ -141,7 +141,9 @@ int main(){
 		}
 	} while (touche != STOP && !collision && !gagne);
     enable_echo();
+
 	gotoxy(1, HAUTEUR_PLATEAU+1);
+	/* calcul du temps CPU */
 	clock_t end = clock();
 	double tmpsCPU = ((end - begin)*1.0) / CLOCKS_PER_SEC;
 	printf( "Temps CPU = %.3f secondes\n",tmpsCPU);
