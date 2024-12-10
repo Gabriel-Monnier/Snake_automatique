@@ -70,6 +70,9 @@ int main(){
 	//direction courante du serpent (HAUT, BAS, GAUCHE ou DROITE)
 	char direction;
 
+	/*nombre de deplacement du serpent */
+	int nbdep = 0;
+
 	// le plateau de jeu
 	tPlateau lePlateau;
 
@@ -122,6 +125,7 @@ int main(){
 			direction = BAS;
 		}
 		progresser(lesX, lesY, direction, lePlateau, &collision, &pommeMangee);
+		nbdep++;
 		if (pommeMangee){
             nbPommes++;
 			gagne = (nbPommes==NB_POMMES);
@@ -147,6 +151,7 @@ int main(){
 	clock_t end = clock();
 	double tmpsCPU = ((end - begin)*1.0) / CLOCKS_PER_SEC;
 	printf( "Temps CPU = %.3f secondes\n",tmpsCPU);
+	printf("nombre de deplacement = %d", nbdep);
 	return EXIT_SUCCESS;
 }
 
