@@ -56,6 +56,7 @@ void gotoxy(int x, int y);
 int kbhit();
 void disable_echo();
 void enable_echo();
+char fdirection(int lesX[], int lesY[],int lesPommesX[],int lesPommesY[], int nbPommes, char actudirection);
 
 
 int main(){
@@ -108,34 +109,7 @@ int main(){
 	// boucle de jeu. Arret si touche STOP, si collision avec une bordure ou
 	// si toutes les pommes sont mangées
 	do {
-		if (lesPommesX[nbPommes] < lesX[0])
-		{
-			if (direction != DROITE)
-                {
-                    direction = GAUCHE;
-                }
-		}
-		else if (lesPommesX[nbPommes] > lesX[0])
-		{
-			if (direction != GAUCHE)
-                {
-                    direction = DROITE;
-                }
-		}
-		else if (lesPommesY[nbPommes] <= lesY[0])
-		{
-			if (direction != BAS)
-                {
-                    direction = HAUT;
-                }
-		}
-		else if (lesPommesY[nbPommes] > lesY[0])
-		{
-			if (direction != HAUT)
-                {
-                    direction = BAS;
-                }
-		}
+		direction = fdirection(lesX, lesY, lesPommesX, lesPommesY, nbPommes, direction);
 		progresser(lesX, lesY, direction, lePlateau, &collision, &pommeMangee);
 		nbdep++;
 		if (pommeMangee){
@@ -270,10 +244,86 @@ void progresser(int lesX[], int lesY[], char direction, tPlateau plateau, bool *
 	else if (plateau[lesX[0]][lesY[0]] == BORDURE){
 		*collision = true;
 	}
+    else
+    {
+        for(int i = 1; i < TAILLE; i++) // collision avec le corp
+        {
+            if ((lesX[0] == lesX[i]) && (lesY[0] == lesY[i]))
+            {
+                *collision = true;
+            }
+        }
+    }
    	dessinerSerpent(lesX, lesY);
 }
 
-
+char fdirection(int lesX[], int lesY[],int lesPommesX[],int lesPommesY[], int nbPommes, char actudirection)
+{
+    char direction = actudirection;
+	bool collision = false;
+    if (lesPommesX[nbPommes] < lesX[0])
+		{
+			if (direction != DROITE)
+                {
+                    direction = GAUCHE;
+                }
+            else
+            {
+                direction = HAUT;
+            }
+		}
+		else if (lesPommesX[nbPommes] > lesX[0])
+		{
+			if (direction != GAUCHE)
+                {
+                    direction = DROITE;
+                }
+            else
+            {
+                direction = HAUT;
+            }
+		}
+		else if (lesPommesY[nbPommes] < lesY[0])
+		{
+			if (direction != BAS)
+                {
+                    direction = HAUT;
+                }
+            else
+            {
+                direction = DROITE;
+            }
+		}
+		else if (lesPommesY[nbPommes] > lesY[0])
+		{
+			if (direction != HAUT)
+            {
+				for(int i = 1; i < TAILLE; i++) // collision avec le corp
+    			{
+        			if ((lesX[0] == lesX[i]) && (lesY[0] + 1 == lesY[i]))
+            		{
+                		collision = true;
+            		}
+            	}
+				if (collision == false)
+				{
+					direction = BAS;
+				}
+			}
+            else
+            {
+				if (lesPommesX[nbPommes] > lesX[0])
+				{
+					direction = DROITE;
+				}
+				else
+				{
+					direction = GAUCHE;
+				}
+            }
+		}
+        return direction;
+}
 
 /************************************************/
 /*				 FONCTIONS UTILITAIRES 			*/
