@@ -137,7 +137,7 @@ int main(){
 	clock_t end = clock();
 	double tmpsCPU = ((end - begin)*1.0) / CLOCKS_PER_SEC;
 	printf( "Temps CPU = %.3f secondes\n",tmpsCPU);
-	printf("nombre de deplacement = %d", nbdep);
+	printf("nombre de deplacement = %d\n", nbdep);
 	return EXIT_SUCCESS;
 }
 
@@ -264,34 +264,85 @@ char fdirection(int lesX[], int lesY[],int lesPommesX[],int lesPommesY[], int nb
     if (lesPommesX[nbPommes] < lesX[0])
 		{
 			if (direction != DROITE)
-                {
-                    direction = GAUCHE;
-                }
+            {
+				for(int i = 1; i < TAILLE; i++) // collision avec le corp
+    			{
+        			if ((lesX[0] - 1 == lesX[i]) && (lesY[0] == lesY[i]))
+            		{
+                		collision = true;
+            		}
+            	}
+				if (collision == false)
+				{
+					direction = GAUCHE;
+				}
+            }
             else
             {
-                direction = HAUT;
+                if (lesPommesY[nbPommes] > lesY[0])
+				{
+					direction = BAS;
+				}
+				else
+				{
+					direction = HAUT;
+				}
             }
 		}
 		else if (lesPommesX[nbPommes] > lesX[0])
 		{
 			if (direction != GAUCHE)
-                {
-                    direction = DROITE;
-                }
+            {
+				for(int i = 1; i < TAILLE; i++) // collision avec le corp
+    			{
+        			if ((lesX[0] + 1 == lesX[i]) && (lesY[0] == lesY[i]))
+            		{
+                		collision = true;
+            		}
+            	}
+				if (collision == false)
+				{
+					direction = DROITE;
+				}
+            }
             else
             {
-                direction = HAUT;
+                if (lesPommesY[nbPommes] > lesY[0])
+				{
+					direction = BAS;
+				}
+				else
+				{
+					direction = HAUT;
+				}
             }
 		}
 		else if (lesPommesY[nbPommes] < lesY[0])
 		{
 			if (direction != BAS)
-                {
-                    direction = HAUT;
-                }
+            {
+				for(int i = 1; i < TAILLE; i++) // collision avec le corp
+    			{
+        			if ((lesX[0] == lesX[i]) && (lesY[0] - 1 == lesY[i]))
+            		{
+                		collision = true;
+            		}
+            	}
+				if (collision == false)
+				{
+					direction = HAUT;
+				}
+            }
             else
             {
-                direction = DROITE;
+				if (lesPommesX[nbPommes] > lesX[0])
+				{
+					direction = DROITE;
+				}
+				else
+				{
+					direction = GAUCHE;
+				}
             }
 		}
 		else if (lesPommesY[nbPommes] > lesY[0])
