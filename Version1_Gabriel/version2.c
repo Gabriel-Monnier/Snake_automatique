@@ -146,26 +146,21 @@ int main(){
 /*		FONCTIONS ET PROCEDURES DU JEU 			*/
 /************************************************/
 void initPlateau(tPlateau plateau){
-	// initialisation du plateau avec des espaces
-	for (int i=1 ; i<=LARGEUR_PLATEAU ; i++){
-		for (int j=1 ; j<=HAUTEUR_PLATEAU ; j++){
-			plateau[i][j] = VIDE;
-		}
-	}
-	// Mise en place la bordure autour du plateau
-	// première ligne
-	for (int i=1 ; i<=LARGEUR_PLATEAU ; i++){
-		plateau[i][1] = BORDURE;
-	}
-	// lignes intermédiaires
-	for (int j=1 ; j<=HAUTEUR_PLATEAU ; j++){
-			plateau[1][j] = BORDURE;
-			plateau[LARGEUR_PLATEAU][j] = BORDURE;
-		}
-	// dernière ligne
-	for (int i=1 ; i<=LARGEUR_PLATEAU ; i++){
-		plateau[i][HAUTEUR_PLATEAU] = BORDURE;
-	}
+	
+	for (int x = 1; x <= TAILLE_MAX_X; x++)
+    {
+        for (int y = 1; y <= TAILLE_MAX_Y; y++)
+        {
+            if (((x == 1) || (y == 1) || (x == TAILLE_MAX_X) || (y == TAILLE_MAX_Y)) && (x != TAILLE_MAX_X / 2) && (y != TAILLE_MAX_Y / 2) )
+            {
+                tableau[x][y] = MUR;
+            }
+            else
+            {
+                tableau[x][y] = AIR;
+            }
+        }
+    }
 }
 
 void dessinerPlateau(tPlateau plateau){
