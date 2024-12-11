@@ -146,18 +146,18 @@ int main(){
 /*		FONCTIONS ET PROCEDURES DU JEU 			*/
 /************************************************/
 void initPlateau(tPlateau plateau){
-	
-	for (int x = 1; x <= TAILLE_MAX_X; x++)
+
+	for (int x = 1; x <= LARGEUR_PLATEAU; x++)
     {
-        for (int y = 1; y <= TAILLE_MAX_Y; y++)
+        for (int y = 1; y <= HAUTEUR_PLATEAU; y++)
         {
-            if (((x == 1) || (y == 1) || (x == TAILLE_MAX_X) || (y == TAILLE_MAX_Y)) && (x != TAILLE_MAX_X / 2) && (y != TAILLE_MAX_Y / 2) )
+            if (((x == 1) || (y == 1) || (x == LARGEUR_PLATEAU) || (y == HAUTEUR_PLATEAU)) && (x != LARGEUR_PLATEAU / 2) && (y != HAUTEUR_PLATEAU / 2) )
             {
-                tableau[x][y] = MUR;
+                plateau[x][y] = BORDURE;
             }
             else
             {
-                tableau[x][y] = AIR;
+                plateau[x][y] = VIDE;
             }
         }
     }
@@ -239,6 +239,22 @@ void progresser(int lesX[], int lesY[], char direction, tPlateau plateau, bool *
 	else if (plateau[lesX[0]][lesY[0]] == BORDURE){
 		*collision = true;
 	}
+	else if ((lesX[0] == LARGEUR_PLATEAU / 2) && (lesY[0] == 0))
+    {
+        lesY[0] = HAUTEUR_PLATEAU;
+    }
+    else if ((lesX[0] == LARGEUR_PLATEAU / 2) && (lesY[0] == HAUTEUR_PLATEAU + 1))
+    {
+        lesY[0] = 1;
+    }
+    else if ((lesY[0] == HAUTEUR_PLATEAU / 2) && (lesX[0] == 0))
+    {
+        lesX[0] = LARGEUR_PLATEAU;
+    }
+    else if ((lesY[0] == HAUTEUR_PLATEAU / 2) && (lesX[0] == LARGEUR_PLATEAU + 1))
+    {
+        lesX[0] = 1;
+    }
     else
     {
         for(int i = 1; i < TAILLE; i++) // collision avec le corp
