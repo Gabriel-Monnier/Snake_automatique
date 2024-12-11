@@ -5,6 +5,7 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <time.h>
+#include <math.h>
 
 
 // taille du serpent
@@ -272,6 +273,12 @@ char fdirection(int lesX[], int lesY[],int lesPommesX[],int lesPommesY[], int nb
 {
     char direction = actudirection;
 	bool collision = false;
+    float distante_p, distance_trN, distance_trS, distance_trE, distance_trW;
+    distance_p = asb((lesX[0] - lesPommesX[nbPommes]) - (lesY[0] - lesPommesY[nbPommes]));
+    distance_trN = abs((lesX[0] - (LARGEUR_PLATEAU / 2)) - (lesY[0] - 1)) + 
+                   abs((lesPommesX[nbPommes] - (LARGEUR_PLATEAU / 2)) + (lesPommesY[nbPommes] - HAUTEUR_PLATEAU));
+
+
     if (lesPommesX[nbPommes] < lesX[0])
 		{
 			if (direction != DROITE)
