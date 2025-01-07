@@ -359,100 +359,6 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
     }
 
     // direction dans laquelle le serpent doit aller
-    if (lieuX < lesX[0])
-    {
-        if (direction != DROITE)
-        {
-            for (int i = 1; i < TAILLE; i++) // collision avec le corp
-            {
-                if (verifcol(lesX, lesY, plateau, GAUCHE))
-                {
-                    collision = true;
-                }
-            }
-            if (collision == false)
-            {
-                direction = GAUCHE; // vas à gauche si pas d'obstacle
-            }
-            else
-            {
-                if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
-                {
-                    direction = BAS; // vas en bas
-                }
-                else if (verifcol(lesX, lesY, plateau, HAUT) == false)
-                {
-                    direction = HAUT; // vas à droite
-                }
-                else if (verifcol(lesX, lesY, plateau, BAS) == false)
-                {
-                    direction = BAS;
-                }
-            }
-        }
-        else
-        {
-            if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
-            {
-                direction = BAS; // vas en bas
-            }
-            else if (verifcol(lesX, lesY, plateau, HAUT) == false)
-            {
-                direction = HAUT; // vas à droite
-            }
-            else if (verifcol(lesX, lesY, plateau, BAS) == false)
-            {
-                direction = BAS;
-            }
-        }
-    }
-    else if (lieuX > lesX[0])
-    {
-        if (direction != GAUCHE)
-        {
-            for (int i = 1; i < TAILLE; i++) // collision avec le corp
-            {
-                if (verifcol(lesX, lesY, plateau, DROITE))
-                {
-                    collision = true;
-                }
-            }
-            if (collision == false)
-            {
-                direction = DROITE; // vas à droite si pas d'obstacle
-            }
-            else
-            {
-                if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
-                {
-                    direction = BAS; // vas en bas
-                }
-                else if (verifcol(lesX, lesY, plateau, HAUT) == false)
-                {
-                    direction = HAUT; // vas en haut
-                }
-                else if (verifcol(lesX, lesY, plateau, BAS) == false)
-                {
-                    direction = BAS;
-                }
-            }
-        }
-        else
-        {
-            if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
-            {
-                direction = BAS; // vas en bas
-            }
-            else if (verifcol(lesX, lesY, plateau, HAUT) == false)
-            {
-                direction = HAUT; // vas en haut
-            }
-            else if (verifcol(lesX, lesY, plateau, BAS) == false)
-            {
-                direction = BAS;
-            }
-        }
-    }
     if (lieuY < lesY[0])
     {
         if (direction != BAS)
@@ -544,6 +450,100 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
             else if (verifcol(lesX, lesY, plateau, DROITE) == false)
             {
                 direction = DROITE;
+            }
+        }
+    }
+    else if (lieuX < lesX[0])
+    {
+        if (direction != DROITE)
+        {
+            for (int i = 1; i < TAILLE; i++) // collision avec le corp
+            {
+                if (verifcol(lesX, lesY, plateau, GAUCHE))
+                {
+                    collision = true;
+                }
+            }
+            if (collision == false)
+            {
+                direction = GAUCHE; // vas à gauche si pas d'obstacle
+            }
+            else
+            {
+                if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
+                {
+                    direction = BAS; // vas en bas
+                }
+                else if (verifcol(lesX, lesY, plateau, HAUT) == false)
+                {
+                    direction = HAUT; // vas à droite
+                }
+                else if (verifcol(lesX, lesY, plateau, BAS) == false)
+                {
+                    direction = BAS;
+                }
+            }
+        }
+        else
+        {
+            if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
+            {
+                direction = BAS; // vas en bas
+            }
+            else if (verifcol(lesX, lesY, plateau, HAUT) == false)
+            {
+                direction = HAUT; // vas à droite
+            }
+            else if (verifcol(lesX, lesY, plateau, BAS) == false)
+            {
+                direction = BAS;
+            }
+        }
+    }
+    else if (lieuX > lesX[0])
+    {
+        if (direction != GAUCHE)
+        {
+            for (int i = 1; i < TAILLE; i++) // collision avec le corp
+            {
+                if (verifcol(lesX, lesY, plateau, DROITE))
+                {
+                    collision = true;
+                }
+            }
+            if (collision == false)
+            {
+                direction = DROITE; // vas à droite si pas d'obstacle
+            }
+            else
+            {
+                if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
+                {
+                    direction = BAS; // vas en bas
+                }
+                else if (verifcol(lesX, lesY, plateau, HAUT) == false)
+                {
+                    direction = HAUT; // vas en haut
+                }
+                else if (verifcol(lesX, lesY, plateau, BAS) == false)
+                {
+                    direction = BAS;
+                }
+            }
+        }
+        else
+        {
+            if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
+            {
+                direction = BAS; // vas en bas
+            }
+            else if (verifcol(lesX, lesY, plateau, HAUT) == false)
+            {
+                direction = HAUT; // vas en haut
+            }
+            else if (verifcol(lesX, lesY, plateau, BAS) == false)
+            {
+                direction = BAS;
             }
         }
     }
