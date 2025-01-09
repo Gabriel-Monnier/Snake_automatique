@@ -310,8 +310,6 @@ void progresser(int lesX[], int lesY[], char direction, tPlateau plateau, bool *
 char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int nbPommes, char direction, tPlateau plateau)
 {
     // choisie la direction prendre en fonction du meilleur chemin
-
-    bool collision = false;
     float distance_p, distance_trN, distance_trS, distance_trE, distance_trW;
     int lieuX, lieuY;
 
@@ -332,63 +330,82 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
                    abs(lesPommesX[nbPommes] - LARGEUR_PLATEAU) + abs(lesPommesY[nbPommes] - 1);
 
     // choisie les coordonnées en fonction du chemin le plus cours
-    if (distance_trW < distance_p)
+    if (distance_trW <= distance_p)
     {
-        lieuX = 1;
+        lieuX = 0;
         lieuY = HAUTEUR_PLATEAU / 2;
     }
-    else if (distance_trE < distance_p)
+    else if (distance_trE <= distance_p)
     {
-        lieuX = LARGEUR_PLATEAU;
+        lieuX = LARGEUR_PLATEAU + 1;
         lieuY = HAUTEUR_PLATEAU / 2;
     }
-    else if (distance_trN < distance_p)
+    else if (distance_trN <= distance_p)
     {
         lieuX = LARGEUR_PLATEAU / 2;
-        lieuY = 1;
+        lieuY = 0;
     }
-    else if (distance_trS < distance_p)
+    else if (distance_trS <= distance_p)
     {
         lieuX = LARGEUR_PLATEAU / 2;
-        lieuY = HAUTEUR_PLATEAU;
+        lieuY = HAUTEUR_PLATEAU + 1;
     }
     else
     {
         lieuX = lesPommesX[nbPommes];
         lieuY = lesPommesY[nbPommes];
     }
-
     // direction dans laquelle le serpent doit aller
-    if (lieuX < lesX[0])
+    if (lieuY < lesY[0])
     {
-        if (direction != DROITE)
+        if (verifcol(lesX, lesY, plateau, HAUT) == false)
         {
-            for (int i = 1; i < TAILLE; i++) // collision avec le corp
+            direction = HAUT; // vas en haut si pas d'obstacle
+        }
+        else
+        {
+            if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
             {
-                if (verifcol(lesX, lesY, plateau, GAUCHE))
-                {
-                    collision = true;
-                }
+                direction = DROITE; // vas à gauche
             }
-            if (collision == false)
+            else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
             {
-                direction = GAUCHE; // vas à gauche si pas d'obstacle
+                direction = GAUCHE; // vas à droite
             }
-            else
+            else if (verifcol(lesX, lesY, plateau, DROITE) == false)
             {
-                if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
-                {
-                    direction = BAS; // vas en bas
-                }
-                else if (verifcol(lesX, lesY, plateau, HAUT) == false)
-                {
-                    direction = HAUT; // vas à droite
-                }
-                else if (verifcol(lesX, lesY, plateau, BAS) == false)
-                {
-                    direction = BAS;
-                }
+                direction = DROITE;
             }
+            
+        }
+    }
+    else if (lieuY > lesY[0])
+    {
+        if (verifcol(lesX, lesY, plateau, BAS) == false)
+        {
+            direction = BAS; // vas en bas si pas d'obstacle
+        }
+        else
+        {
+            if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
+            {
+                direction = DROITE; // vas à droite
+            }
+            else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
+            {
+                direction = GAUCHE; // vas à gauche
+            }
+            else if (verifcol(lesX, lesY, plateau, DROITE) == false)
+            {
+                direction = DROITE;
+            }
+        }
+    }
+    else if (lieuX < lesX[0])
+    {
+        if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
+        {
+            direction = GAUCHE; // vas à gauche si pas d'obstacle
         }
         else
         {
@@ -408,34 +425,9 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
     }
     else if (lieuX > lesX[0])
     {
-        if (direction != GAUCHE)
+        if (verifcol(lesX, lesY, plateau, DROITE) == false)
         {
-            for (int i = 1; i < TAILLE; i++) // collision avec le corp
-            {
-                if (verifcol(lesX, lesY, plateau, DROITE))
-                {
-                    collision = true;
-                }
-            }
-            if (collision == false)
-            {
-                direction = DROITE; // vas à droite si pas d'obstacle
-            }
-            else
-            {
-                if (lieuY > lesY[0] && (verifcol(lesX, lesY, plateau, BAS) == false))
-                {
-                    direction = BAS; // vas en bas
-                }
-                else if (verifcol(lesX, lesY, plateau, HAUT) == false)
-                {
-                    direction = HAUT; // vas en haut
-                }
-                else if (verifcol(lesX, lesY, plateau, BAS) == false)
-                {
-                    direction = BAS;
-                }
-            }
+            direction = DROITE; // vas à droite si pas d'obstacle
         }
         else
         {
@@ -453,97 +445,46 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
             }
         }
     }
-    if (lieuY < lesY[0])
+    for (int i = 0; i < NB_PAVES; i++) // chemin optimal en prenant en compte les pavés
     {
-        if (direction != BAS)
+        if (((lesX[0] == lesPavesX[i] - 1) && ((lesY[0] == lesPavesY[i] - 1) || (lesY[0] == lesPavesY[i] + TAILLE_PAVES))) || // si c'est un des coins des pavés
+            ((lesX[0] == lesPavesX[i] + TAILLE_PAVES) && ((lesY[0] == lesPavesY[i] - 1) || (lesY[0] == lesPavesY[i] + TAILLE_PAVES))))
         {
-            for (int i = 1; i < TAILLE; i++) // collision avec le corp
+            if ((lesX[0] > lieuX) && (lesX[0] == lesPavesX[i] + TAILLE_PAVES)) // si c'est un des coins droit du pavé et que l'objectif est a gauche
             {
-                if (verifcol(lesX, lesY, plateau, HAUT))
+                if ((lieuY >= lesPavesY[i]) && (lieuY < lesPavesY[i] + TAILLE_PAVES))
                 {
-                    collision = true;
+                    if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
+                    {
+                        direction = DROITE; // vas à droite
+                    }
+                    else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
+                    {
+                        direction = GAUCHE; // vas à gauche
+                    }
+                    else if (verifcol(lesX, lesY, plateau, DROITE) == false)
+                    {
+                        direction = DROITE;
+                    }
                 }
             }
-            if (collision == false)
+            else if ((lesX[0] == lesPavesX[i] - 1) && (lesX[0] < lieuX) ) // si c'est un des coins gauches du pavé et que l'objectif est a droite
             {
-                direction = HAUT; // vas en haut si pas d'obstacle
-            }
-            else
-            {
-                if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
+                if ((lieuY >= lesPavesY[i]) && (lieuY < lesPavesY[i] + TAILLE_PAVES))
                 {
-                    direction = DROITE; // vas à gauche
+                    if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
+                    {
+                        direction = DROITE; // vas à droite
+                    }
+                    else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
+                    {
+                        direction = GAUCHE; // vas à gauche
+                    }
+                    else if (verifcol(lesX, lesY, plateau, DROITE) == false)
+                    {
+                        direction = DROITE;
+                    }
                 }
-                else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
-                {
-                    direction = GAUCHE; // vas à droite
-                }
-                else if (verifcol(lesX, lesY, plateau, DROITE) == false)
-                {
-                    direction = DROITE;
-                }
-            }
-        }
-        else
-        {
-            if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
-            {
-                direction = DROITE; // vas à gauche
-            }
-            else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
-            {
-                direction = GAUCHE; // vas à droite
-            }
-            else if (verifcol(lesX, lesY, plateau, DROITE) == false)
-            {
-                direction = DROITE;
-            }
-        }
-    }
-    else if (lieuY > lesY[0])
-    {
-        if (direction != HAUT)
-        {
-            for (int i = 1; i < TAILLE; i++) // collision avec le corp
-            {
-                if (verifcol(lesX, lesY, plateau, BAS))
-                {
-                    collision = true;
-                }
-            }
-            if (collision == false)
-            {
-                direction = BAS; // vas en bas si pas d'obstacle
-            }
-            else
-            {
-                if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
-                {
-                    direction = DROITE; // vas à droite
-                }
-                else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
-                {
-                    direction = GAUCHE; // vas à gauche
-                }
-                else if (verifcol(lesX, lesY, plateau, DROITE) == false)
-                {
-                    direction = DROITE;
-                }
-            }
-        }
-        else
-        {
-            if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE) == false))
-            {
-                direction = DROITE; // vas à gauche
-            }
-            else if (verifcol(lesX, lesY, plateau, GAUCHE) == false)
-            {
-                direction = GAUCHE; // vas à droite
-            }
-            else if (verifcol(lesX, lesY, plateau, DROITE) == false)
-            {
-                direction = DROITE;
             }
         }
     }
