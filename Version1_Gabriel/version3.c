@@ -415,7 +415,7 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
             }
             else if (verifcol(lesX, lesY, plateau, HAUT) == false)
             {
-                direction = HAUT; // vas à droite
+                direction = HAUT; // vas en haut
             }
             else if (verifcol(lesX, lesY, plateau, BAS) == false)
             {
