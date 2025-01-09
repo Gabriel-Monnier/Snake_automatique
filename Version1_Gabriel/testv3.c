@@ -357,7 +357,8 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
         lieuX = lesPommesX[nbPommes];
         lieuY = lesPommesY[nbPommes];
     }
-
+    printf("trW = %f", distance_trW);
+    printf("P = %f", distance_p);
     // direction dans laquelle le serpent doit aller
     if (lieuY < lesY[0])
     {
