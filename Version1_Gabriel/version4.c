@@ -205,7 +205,7 @@ int main()
     clock_t end = clock();
     double tmpsCPU = ((end - begin) * 1.0) / CLOCKS_PER_SEC;
     printf("Temps CPU = %.3f secondes\n", tmpsCPU); // affiche le temps CPU
-      // affiche le nombre de déplacement et de pomme mangé par les 2 serpents
+                                                    // affiche le nombre de déplacement et de pomme mangé par les 2 serpents
     printf("nombre de deplacement du serpent 1 = %d\n nombre de pomme serpent 1 = %d\n", nbdep1, PommesMange1);
     printf("nombre de deplacement du serpent 2 = %d\n nombre de pomme serpent 2= %d\n", nbdep2, PommesMange2);
     return EXIT_SUCCESS;
@@ -345,6 +345,7 @@ void progresser(int lesX[], int lesY[], char direction, tPlateau plateau, bool *
     {
         *collision = true;
     }
+    // les portaux/trou du plateau
     else if ((lesX[0] == LARGEUR_PLATEAU / 2) && (lesY[0] == 0))
     {
         lesY[0] = HAUTEUR_PLATEAU;
@@ -447,7 +448,6 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
             {
                 direction = BAS;
             }
-            
         }
     }
     else if (lieuY > lesY[0])
@@ -551,7 +551,7 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
                     }
                 }
             }
-            else if ((lesX[0] == lesPavesX[i] - 1) && (lesX[0] < lieuX) ) // si c'est un des coins gauches du pavé et que l'objectif est a droite
+            else if ((lesX[0] == lesPavesX[i] - 1) && (lesX[0] < lieuX)) // si c'est un des coins gauches du pavé et que l'objectif est a droite
             {
                 if ((lieuY >= lesPavesY[i]) && (lieuY < lesPavesY[i] + TAILLE_PAVES))
                 {
@@ -573,11 +573,6 @@ char fdirection(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int 
     }
     return direction;
 }
-
-
-
-
-
 
 void progresser2(int lesX[], int lesY[], char direction, tPlateau plateau, bool *collision, bool *pomme)
 {
@@ -722,7 +717,6 @@ char fdirection2(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int
             {
                 direction = BAS;
             }
-            
         }
     }
     else if (lieuY > lesY[0])
@@ -826,7 +820,7 @@ char fdirection2(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int
                     }
                 }
             }
-            else if ((lesX[0] == lesPavesX[i] - 1) && (lesX[0] < lieuX) ) // si c'est un des coins gauches du pavé et que l'objectif est a droite
+            else if ((lesX[0] == lesPavesX[i] - 1) && (lesX[0] < lieuX)) // si c'est un des coins gauches du pavé et que l'objectif est a droite
             {
                 if ((lieuY >= lesPavesY[i]) && (lieuY < lesPavesY[i] + TAILLE_PAVES))
                 {
