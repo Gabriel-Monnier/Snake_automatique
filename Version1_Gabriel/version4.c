@@ -14,10 +14,10 @@
 #define HAUTEUR_PLATEAU 40 //
 // position initiale de la tête du serpent 1
 #define X_INITIAL 40
-#define Y_INITIAL 14
+#define Y_INITIAL 13
 // position initiale de la tête du serpent 2
 #define X_INITIAL2 40
-#define Y_INITIAL2 26
+#define Y_INITIAL2 27
 // nombre de pommes à manger pour gagner
 #define NB_POMMES 10
 // nombre de pavé
@@ -49,11 +49,11 @@
 
 typedef char tPlateau[LARGEUR_PLATEAU + 1][HAUTEUR_PLATEAU + 1];
 
-int lesPommesX[NB_POMMES] = {75, 75, 78, 2, 8, 78, 74, 2, 72, 5};
-int lesPommesY[NB_POMMES] = {8, 39, 2, 2, 5, 39, 33, 38, 35, 2};
+int lesPommesX[NB_POMMES] = {40, 75, 78, 2, 9, 78, 74, 2, 72, 5};
+int lesPommesY[NB_POMMES] = {20, 38, 2, 2, 5, 38, 32, 38, 32, 2};
 
-int lesPavesX[NB_PAVES] = {3, 74, 3, 74, 38, 38};
-int lesPavesY[NB_PAVES] = {3, 3, 34, 34, 21, 15};
+int lesPavesX[NB_PAVES] = { 4, 73, 4, 73, 38, 38};
+int lesPavesY[NB_PAVES] = { 4, 4, 33, 33, 14, 22};
 
 void initPlateau(tPlateau plateau);
 void dessinerPlateau(tPlateau plateau);
@@ -723,11 +723,22 @@ char fdirection2(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int
     {
         if (verifcol(lesX, lesY, plateau, BAS, lesautresX, lesautresY) == false)
         {
-            direction = BAS; // vas en bas si pas d'obstacle
+            if ((lesX[0] == 39) && (lesY[0] == 20))
+            {
+                direction = HAUT;
+            }
+            else
+            {
+                direction = BAS; // vas en bas si pas d'obstacle
+            }
         }
         else
         {
-            if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE, lesautresX, lesautresY) == false))
+            if ((lesX[0] == 39) && (lesY[0] == 19))
+            {
+                direction = GAUCHE;
+            }
+            else if (lieuX > lesX[0] && (verifcol(lesX, lesY, plateau, DROITE, lesautresX, lesautresY) == false))
             {
                 direction = DROITE; // vas à droite
             }
@@ -739,7 +750,7 @@ char fdirection2(int lesX[], int lesY[], int lesPommesX[], int lesPommesY[], int
             {
                 direction = DROITE;
             }
-            else
+            else 
             {
                 direction = HAUT;
             }
@@ -923,7 +934,7 @@ bool verifcol(int lesX[], int lesY[], tPlateau plateau, char direction, int lesa
                 col = true;
             }
         }
-        for (int i = 1; i < TAILLE; i++) // collision avec le corp de l'autre serpent
+        for (int i = 0; i < TAILLE; i++) // collision avec le corp de l'autre serpent
         {
             if ((direction == DROITE) && ((lesX[0] + 1 == lesautresX[i]) && (lesY[0] == lesautresY[i]))) // à droite
             {
